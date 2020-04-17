@@ -29,11 +29,12 @@ class AternosAPI():
     
     def StartServer(self):
         serverstatus = self.GetStatus()
-        if serverstatus == "Offline":
-            startserver = requests.get(url=f"https://aternos.org/panel/ajax/start.php?headstart=0&ASEC={self.ASEC}",cookies=self.cookies,headers=self.headers)
-            return "Server Started"
-        else:
+        if serverstatus == "Online":
             return "Server Already Running"
+        else:
+            startserver = requests.get(url=f"https://aternos.org/panel/ajax/start.php?headstart=0&ASEC={self.ASEC}", cookies=self.cookies, headers=self.headers)
+            output = self.skip_queue()
+            return output
     
     def StopServer(self):
         serverstatus = self.GetStatus()
@@ -70,3 +71,24 @@ class AternosAPI():
             Port = Port.strip()
 
             return f"{IP},{Port},{Software}"
+        
+    def queue_confirm(self):
+        confirm = requests.get(url=f'https://aternos.org/panel/ajax/confirm.php?ASEC={self.ASEC}',cookies=self.cookies,headers=self.headers)
+        return confirm.status_code
+
+    def queue_number(self):
+        webserver = requests.get(url='https://aternos.org/server/',cookies=self.cookies,headers=self.headers)
+        webdata = BeautifulSoup(webserver.content, 'html.parser')
+        status = webdata.find('span', class_='server-status-label-right').get_text()
+        return status.strip()
+
+    def skip_queue(self):
+        i = 0
+        while i < 1:
+            serverstatus = self.GetStatus()
+            queue_number = self.queue_number()
+            confirm = self.queue_confirm()
+            print(serverstatus+" : "+queue_number+" : "+str(confirm)+"\r", end="")
+            if serverstatus == "Online":
+                i = 1
+                return "Server Started"
