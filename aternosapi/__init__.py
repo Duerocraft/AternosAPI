@@ -33,8 +33,7 @@ class AternosAPI():
             return "Server Already Running"
         else:
             startserver = requests.get(url=f"https://aternos.org/panel/ajax/start.php?headstart=0&ASEC={self.ASEC}", cookies=self.cookies, headers=self.headers)
-            output = self.skip_queue()
-            return output
+            self.skip_queue()
     
     def StopServer(self):
         serverstatus = self.GetStatus()
@@ -71,7 +70,7 @@ class AternosAPI():
             Port = Port.strip()
 
             return f"{IP},{Port},{Software}"
-        
+
     def queue_confirm(self):
         confirm = requests.get(url=f'https://aternos.org/panel/ajax/confirm.php?ASEC={self.ASEC}',cookies=self.cookies,headers=self.headers)
         return confirm.status_code
