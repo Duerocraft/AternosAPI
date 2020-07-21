@@ -2,13 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 
 class AternosAPI():
-    def __init__(self, headers, cookie, ASEC):
+    def __init__(self, headers, cookie, SEC):
         self.headers = {}
         self.cookies = {}
         self.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0"
         self.headers['Cookie'] = headers
         self.cookies['ATERNOS_SESSION'] = cookie
-        self.ASEC = ASEC
+        self.SEC = SEC
         self.JavaSoftwares = ['Vanilla', 'Spigot', 'Forge', 'Magma', 'Snapshot', 'Bukkit', 'Paper', 'Modpacks', 'Glowstone']
         self.BedrockSoftwares = ['Bedrock', 'Pocketmine-MP']
         self.CheckVaildInput()
@@ -32,7 +32,7 @@ class AternosAPI():
         if serverstatus == "Online":
             return "Server Already Running"
         else:
-            startserver = requests.get(url=f"https://aternos.org/panel/ajax/start.php?headstart=0&ASEC={self.ASEC}", cookies=self.cookies, headers=self.headers)
+            startserver = requests.get(url=f"https://aternos.org/panel/ajax/start.php?headstart=0&SEC={self.SEC}", cookies=self.cookies, headers=self.headers)
             self.skip_queue()
     
     def StopServer(self):
@@ -40,7 +40,7 @@ class AternosAPI():
         if serverstatus == "Offline":
             return "Server Already Offline"
         else:
-            stopserver = requests.get(url=f"https://aternos.org/panel/ajax/stop.php?ASEC={self.ASEC}",cookies=self.cookies,headers=self.headers)
+            stopserver = requests.get(url=f"https://aternos.org/panel/ajax/stop.php?SEC={self.SEC}",cookies=self.cookies,headers=self.headers)
             return "Server Stopped"
 
     def GetServerInfo(self):
@@ -56,7 +56,7 @@ class AternosAPI():
             IP = IP.strip()
 
             IP = IP.split(" ")
-            IP = IP[0]
+            IP = IP[0].strip()
 
             Port = "25565(Optional)"
 
@@ -72,7 +72,7 @@ class AternosAPI():
             return f"{IP},{Port},{Software}"
 
     def queue_confirm(self):
-        confirm = requests.get(url=f'https://aternos.org/panel/ajax/confirm.php?ASEC={self.ASEC}',cookies=self.cookies,headers=self.headers)
+        confirm = requests.get(url=f'https://aternos.org/panel/ajax/confirm.php?SEC={self.SEC}',cookies=self.cookies,headers=self.headers)
         return confirm.status_code
 
     def queue_number(self):
