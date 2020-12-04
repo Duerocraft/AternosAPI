@@ -11,7 +11,7 @@ def readme():
 
 setuptools.setup(
     name="AternosAPI",
-    version="1.0.0",
+    version="1.2.0",
     description="A Python Aternos API",
     long_description=readme(),
     long_description_content_type="text/markdown",
