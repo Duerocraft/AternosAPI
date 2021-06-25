@@ -52,6 +52,16 @@ class AternosAPI():
                 startserver = self.filterCloudflare(url=f"https://aternos.org/panel/ajax/confirm.php", params=parameters, headers=self.headers)
             
             return "Server Started"
+    
+    #Added online player list:
+    def GetPlayerInfo(self):
+        players = []
+        webserver = self.filterCloudflare(url='https://aternos.org/players/', headers=self.headers)
+        webdata = BeautifulSoup(webserver.text, 'html.parser')
+        status = webdata.findAll('div', class_='playername')
+        for i in status:
+            players.append(i.text.strip())
+        return players
 
     def StopServer(self):
         serverstatus = self.GetStatus()
@@ -99,7 +109,7 @@ class AternosAPI():
     
     def filterCloudflare(self, url, params=None, headers=None):
 
-        #Keeps sending request untill cloudfair we bypass Cloudflare:
+        #Keeps sending request until we bypass Cloudflare:
         
         requests = cloudscraper.create_scraper()
         gotData = requests.get(url, params=params, headers=headers)
