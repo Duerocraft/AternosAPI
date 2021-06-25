@@ -1,9 +1,6 @@
 from bs4 import BeautifulSoup
 import cloudscraper, time
 
-#Cloudflare bypass
-requests = cloudscraper.create_scraper()
-
 class AternosAPI():
     def __init__(self, headers, TOKEN, timeout = 10):
 
@@ -103,8 +100,8 @@ class AternosAPI():
     def filterCloudflare(self, url, params=None, headers=None):
 
         #Keeps sending request untill cloudfair we bypass Cloudflare:
-
-        global requests
+        
+        requests = cloudscraper.create_scraper()
         gotData = requests.get(url, params=params, headers=headers)
         counter = 0
 
