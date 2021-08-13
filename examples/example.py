@@ -2,7 +2,7 @@ from aternosapi import AternosAPI
 
 headers_cookie = "xxxxx"
 TOKEN = "xxxxx"
-server = AternosAPI(headers_cookie, TOKEN)
+server = AternosAPI(headers_cookie, TOKEN, timeout = 10)
 
 def cmd(cmd):
 	if cmd == "start":
